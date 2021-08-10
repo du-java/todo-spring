@@ -23,8 +23,13 @@ dependencies {
 
     implementation 'mysql:mysql-connector-java:8.0.26'
 
-    implementation 'org.slf4j:slf4j-simple:1.7.32'
     implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'ch.qos.logback:logback-core:1.2.5'
+    implementation 'ch.qos.logback:logback-classic:1.2.5'
+
+    implementation 'com.mattbertolini:liquibase-slf4j:4.0.0'
+
+    implementation 'org.liquibase:liquibase-core:4.4.3'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'

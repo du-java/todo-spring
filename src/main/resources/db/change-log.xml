@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <include file="db/change-logs/2021-08-10_1-create-meetings-table.sql"/>
+    <include file="db/change-logs/2021-08-10_2-create-tasks-table.xml"/>
+
+</databaseChangeLog>

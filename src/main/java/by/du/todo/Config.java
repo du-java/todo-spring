@@ -1,5 +1,6 @@
 package by.du.todo;
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,11 @@ public class Config {
     @Value("${spring.datasource.password}")
     private String dbPass;
 
+    @Value("${spring.liquibase.enable}")
+    private boolean isEnabled;
+    @Value("${spring.liquibase.changeLog}")
+    private String changeLog;
+
     @Bean
     public DataSource dataSource() {
         final DriverManagerDataSource manager = new DriverManagerDataSource();
@@ -51,5 +57,14 @@ public class Config {
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public SpringLiquibase springLiquibase() {
+        final SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setDataSource(dataSource());
+        liquibase.setShouldRun(isEnabled);
+        liquibase.setChangeLog(changeLog);
+        return liquibase;
     }
 }
