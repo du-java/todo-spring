@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 
-
 @Component
 @RequiredArgsConstructor
 public class MeetingController {
@@ -68,7 +67,7 @@ public class MeetingController {
             return;
         }
         final String desc = inputService.getLine("Input Description: ");
-        meetingService.add(new Meeting(place, start, end, desc));
+        meetingService.add(Meeting.builder().place(place).end(end).start(start).desc(desc).build());
         System.out.println("\nNew Meeting was added successfully\n");
     }
 

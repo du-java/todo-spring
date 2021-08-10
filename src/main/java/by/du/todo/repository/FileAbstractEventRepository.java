@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class AbstractRepository<T extends Event> implements Repository<T> {
+public abstract class FileAbstractEventRepository<T extends Event> implements EventRepository<T> {
 
     private int currentId;
 
     private final List<T> meetingList = new ArrayList<>();
     private final FileService<T> fileService;
 
-    protected AbstractRepository(final FileService<T> fileService) {
+    protected FileAbstractEventRepository(final FileService<T> fileService) {
         this.fileService = fileService;
     }
 
@@ -45,7 +45,6 @@ public abstract class AbstractRepository<T extends Event> implements Repository<
         return meetingList;
     }
 
-    @Override
     public List<T> getAllBy(final Predicate<T> predicate) {
         if (predicate == null) {
             return Collections.emptyList();

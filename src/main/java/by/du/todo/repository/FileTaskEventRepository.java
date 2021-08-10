@@ -5,8 +5,8 @@ import by.du.todo.service.FileService;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class TaskRepository extends AbstractRepository<Task> {
-    public TaskRepository(final FileService<Task> fileService) {
+public class FileTaskEventRepository extends FileAbstractEventRepository<Task> {
+    public FileTaskEventRepository(final FileService<Task> fileService) {
         super(fileService);
     }
 }

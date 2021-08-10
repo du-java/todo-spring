@@ -18,13 +18,13 @@ public class MeetingFileService extends AbstractFileService<Meeting> {
     protected Function<String, Meeting> getParse() {
         return line -> {
             final String[] strings = line.split(",");
-            final Meeting meeting = new Meeting();
-            meeting.setId(Integer.parseInt(strings[0]));
-            meeting.setPlace(strings[1]);
-            meeting.setStart(LocalDateTime.parse(strings[2]));
-            meeting.setEnd(LocalDateTime.parse(strings[3]));
-            meeting.setDesc(strings[4]);
-            return meeting;
+            return Meeting.builder()
+                    .id(Integer.parseInt(strings[0]))
+                    .place(strings[1])
+                    .start(LocalDateTime.parse(strings[2]))
+                    .end(LocalDateTime.parse(strings[3]))
+                    .desc(strings[4])
+                    .build();
         };
     }
 

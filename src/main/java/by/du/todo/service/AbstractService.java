@@ -1,39 +1,39 @@
 package by.du.todo.service;
 
 import by.du.todo.model.Event;
-import by.du.todo.repository.Repository;
+import by.du.todo.repository.EventRepository;
 
 import java.util.List;
 
 public abstract class AbstractService<T extends Event> implements Service<T> {
 
-    private final Repository<T> repository;
+    private final EventRepository<T> eventRepository;
 
-    public AbstractService(final Repository<T> repository) {
-        this.repository = repository;
+    public AbstractService(final EventRepository<T> eventRepository) {
+        this.eventRepository = eventRepository;
     }
 
     @Override
     public T getById(final int id) {
-        return repository.getById(id);
+        return eventRepository.getById(id);
     }
 
     @Override
     public void add(final T t) {
-        repository.add(t);
+        eventRepository.add(t);
     }
 
     @Override
     public List<T> getAll() {
-        return repository.getAll();
+        return eventRepository.getAll();
     }
 
     @Override
     public void save(final T t) {
-        repository.save(t);
+        eventRepository.save(t);
     }
 
     public void delete(final int id){
-        repository.delete(id);
+        eventRepository.delete(id);
     }
 }

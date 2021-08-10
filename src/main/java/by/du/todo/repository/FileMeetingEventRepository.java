@@ -5,8 +5,8 @@ import by.du.todo.service.FileService;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MeetingRepository extends AbstractRepository<Meeting> {
-    public MeetingRepository(final FileService<Meeting> fileService) {
+public class FileMeetingEventRepository extends FileAbstractEventRepository<Meeting> {
+    public FileMeetingEventRepository(final FileService<Meeting> fileService) {
         super(fileService);
     }
 }

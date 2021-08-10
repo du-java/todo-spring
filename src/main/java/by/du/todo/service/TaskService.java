@@ -1,7 +1,7 @@
 package by.du.todo.service;
 
 import by.du.todo.model.Task;
-import by.du.todo.repository.TaskRepository;
+import by.du.todo.repository.FileTaskEventRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.List;
 @Component
 public class TaskService extends AbstractService<Task> {
 
-    private final TaskRepository taskRepository;
+    private final FileTaskEventRepository taskRepository;
 
-    public TaskService(final TaskRepository taskRepository) {
+    public TaskService(final FileTaskEventRepository taskRepository) {
         super(taskRepository);
         this.taskRepository = taskRepository;
     }
