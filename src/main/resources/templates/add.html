@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<p th:text="@{environment.getProperty('spring.jpa.hibernate.ddl-auto')}">spring.jpa.hibernate.ddl-auto</p>
+<h1 th:text="${meeting}">desc</h1>
+
+</body>
+</html>

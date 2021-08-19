@@ -1,14 +1,12 @@
 package by.du.todo;
 
-import by.du.todo.controller.*;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class App {
 
     public static void main(final String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.scan("by.du.todo");
-        context.refresh();
-        context.getBean(HomeController.class).show();
+        SpringApplication.run(App.class, args);
     }
 }

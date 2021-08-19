@@ -1,7 +1,9 @@
 package by.du.todo.model;
 
-public interface Event {
-    int getId();
+import java.io.Serializable;
 
-    void setId(int id);
+public interface Event extends Serializable {
+    Long getId();
+
+    void setId(Long id);
 }

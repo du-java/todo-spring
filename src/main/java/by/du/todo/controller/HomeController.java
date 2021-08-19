@@ -1,43 +1,46 @@
 package by.du.todo.controller;
 
-import by.du.todo.service.InputService;
-import by.du.todo.service.TranslateService;
+import by.du.todo.exception.NotFoundException;
+import by.du.todo.model.Meeting;
+import by.du.todo.repository.MeetingRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-@Component
+import java.time.LocalDateTime;
+
+@Controller
 @RequiredArgsConstructor
-public class HomeController implements Controller {
+public class HomeController {
 
-    private final InputService inputService;
-    private final MeetingController meetingController;
-    private final TaskController taskController;
-    private final LanguageController languageController;
-    private final TranslateService translateService;
+    private final MeetingRepository meetingRepository;
 
-    public void show() {
-        System.out.println("ToDo List Application");
-        while (true) {
-            System.out.println("1 - Meetings");
-            System.out.println("2 - Tasks");
-            System.out.println("9 - " + translateService.getString("changeLang"));
-            System.out.println("0 - " + translateService.getString("exit"));
-            System.out.println("------------------------");
-            final int nextInt = inputService.nextInt();
-            switch (nextInt) {
-                case 1:
-                    meetingController.show();
-                    break;
-                case 2:
-                    taskController.show();
-                    break;
-                case 9:
-                    languageController.show();
-                    break;
-                case 0:
-                    return;
-                default:
-            }
-        }
+    @GetMapping("/home")
+    public ModelAndView home() {
+        final long id = 1l;
+        final Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(id));
+
+        final ModelAndView modelAndView = new ModelAndView("home");
+
+        modelAndView.addObject("meeting", meeting);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/add")
+    public ModelAndView home1() {
+        final Meeting meeting = new Meeting();
+        meeting.setDesc("desc1");
+        meeting.setPlace("place1");
+        meeting.setStart(LocalDateTime.now());
+        meeting.setEnd(LocalDateTime.now());
+        meetingRepository.save(meeting);
+        final ModelAndView modelAndView = new ModelAndView("home");
+
+        modelAndView.addObject("meeting", meeting);
+
+        return modelAndView;
     }
 }

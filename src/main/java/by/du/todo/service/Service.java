@@ -5,7 +5,7 @@ import by.du.todo.model.Event;
 import java.util.List;
 
 public interface Service<T extends Event> {
-    T getById(int id);
+    T getById(long id);
 
     void add(T t);
 
@@ -13,6 +13,6 @@ public interface Service<T extends Event> {
 
     void save(T t);
 
-    void delete(int id);
+    void delete(long id);
 
 }

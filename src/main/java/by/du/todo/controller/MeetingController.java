@@ -1,84 +1,63 @@
 package by.du.todo.controller;
 
-import by.du.todo.exception.StopException;
+import by.du.todo.dto.MeetingRequest;
+import by.du.todo.exception.NotFoundException;
 import by.du.todo.model.Meeting;
-import by.du.todo.service.InputService;
-import by.du.todo.service.MeetingService;
-import by.du.todo.service.TranslateService;
+import by.du.todo.repository.MeetingRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import javax.validation.Valid;
 
-
-@Component
+@RequestMapping("/api/v1/meeting")
+@RestController
 @RequiredArgsConstructor
 public class MeetingController {
 
-    private final InputService inputService;
-    private final MeetingService meetingService;
-    private final FilteredMeetingController filteredMeetingController;
-    private final EditMeetingController editMeetingController;
-    private final TranslateService translateService;
+    private final MeetingRepository meetingRepository;
 
-    public void show() {
-        while (true) {
-            System.out.println("Meetings");
-            System.out.println("1 - " + translateService.getString("addMeeting"));
-            System.out.println("2 - " + translateService.getString("allMeetings"));
-            System.out.println("3 - " + translateService.getString("showFiltered"));
-            System.out.println("4 - " + translateService.getString("editMeeting"));
-            System.out.println("5 - " + translateService.getString("deleteMeeting"));
-            System.out.println("0 - " + translateService.getString("return"));
-            System.out.println("------------------------");
-            final int nextInt = inputService.nextInt();
-            switch (nextInt) {
-                case 1:
-                    add();
-                    break;
-                case 2:
-                    showAll();
-                    break;
-                case 3:
-                    filteredMeetingController.show();
-                    break;
-                case 4:
-                    editMeetingController.show();
-                    break;
-                case 5:
-                    delete();
-                    break;
-                case 0:
-                    return;
-                default:
-            }
-        }
+    @GetMapping("/")
+    public ResponseEntity<Page<Meeting>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(meetingRepository.findAll(pageable));
     }
 
-    public void add() {
-        System.out.println("Adding a new Meeting");
-        final String place = inputService.getLine("Input Place: ");
-        LocalDateTime start;
-        LocalDateTime end;
-        try {
-            start = inputService.getLocalDateTime("Input Start date and time (%s): ");
-            end = inputService.getLocalDateTime("Input End date and time (%s): ");
-        } catch (StopException ex) {
-            return;
-        }
-        final String desc = inputService.getLine("Input Description: ");
-        meetingService.add(Meeting.builder().place(place).end(end).start(start).desc(desc).build());
-        System.out.println("\nNew Meeting was added successfully\n");
+    @GetMapping("/{meetingId}")
+    public ResponseEntity<Meeting> findById(@PathVariable("meetingId") Long id) {
+        final Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(id));
+        return ResponseEntity.ok(meeting);
     }
 
-    public void showAll() {
-        System.out.println("Showing all meetings");
-        meetingService.getAll().forEach(System.out::println);
-        System.out.println();
+    @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Meeting> create(@Valid @RequestBody MeetingRequest request) {
+        final Meeting meeting = new Meeting();
+        BeanUtils.copyProperties(request, meeting);
+
+        final Meeting saved = meetingRepository.save(meeting);
+        return ResponseEntity.ok(saved);
     }
 
-    public void delete() {
-        int id = inputService.nextInt("Input id to delete");
-        meetingService.delete(id);
+    @PutMapping("/")
+    public ResponseEntity<Meeting> update(@Valid @RequestBody MeetingRequest request) {
+        final Meeting meeting = meetingRepository.findById(request.getId())
+                .orElseThrow(() -> new NotFoundException(request.getId()));
+
+        BeanUtils.copyProperties(request, meeting);
+
+        final Meeting saved = meetingRepository.save(meeting);
+        return ResponseEntity.accepted().body(saved);
     }
+
+    @DeleteMapping("/")
+    public ResponseEntity<Void> delete(@Valid @RequestBody MeetingRequest request) {
+        meetingRepository.deleteById(request.getId());
+        return ResponseEntity.accepted().build();
+    }
+
 }

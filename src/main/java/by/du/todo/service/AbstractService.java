@@ -1,31 +1,31 @@
 package by.du.todo.service;
 
 import by.du.todo.model.Event;
-import by.du.todo.repository.EventRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public abstract class AbstractService<T extends Event> implements Service<T> {
 
-    private final EventRepository<T> eventRepository;
+    private final JpaRepository<T, Long> eventRepository;
 
-    public AbstractService(final EventRepository<T> eventRepository) {
+    public AbstractService(final JpaRepository<T, Long> eventRepository) {
         this.eventRepository = eventRepository;
     }
 
     @Override
-    public T getById(final int id) {
+    public T getById(final long id) {
         return eventRepository.getById(id);
     }
 
     @Override
     public void add(final T t) {
-        eventRepository.add(t);
+        eventRepository.save(t);
     }
 
     @Override
     public List<T> getAll() {
-        return eventRepository.getAll();
+        return eventRepository.findAll();
     }
 
     @Override
@@ -33,7 +33,7 @@ public abstract class AbstractService<T extends Event> implements Service<T> {
         eventRepository.save(t);
     }
 
-    public void delete(final int id){
-        eventRepository.delete(id);
+    public void delete(final long id) {
+        eventRepository.deleteById(id);
     }
 }

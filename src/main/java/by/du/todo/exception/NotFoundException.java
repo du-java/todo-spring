@@ -2,9 +2,9 @@ package by.du.todo.exception;
 
 public class NotFoundException extends RuntimeException {
     private String message;
-    private int id;
+    private long id;
 
-    public NotFoundException( int id) {
+    public NotFoundException(long id) {
         this.id = id;
     }
 }

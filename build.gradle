@@ -1,6 +1,10 @@
 plugins {
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
+
+sourceCompatibility = '11'
 
 group 'by.du'
 version '1.0-SNAPSHOT'
@@ -9,32 +13,28 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    springVersion = '5.3.9'
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 dependencies {
+    implementation 'javax.validation:validation-api'
+    implementation 'org.hibernate.validator:hibernate-validator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
-    implementation "org.springframework:spring-core:$springVersion"
-    implementation "org.springframework:spring-beans:$springVersion"
-    implementation "org.springframework:spring-context:$springVersion"
-    implementation "org.springframework:spring-context-support:$springVersion"
-    implementation "org.springframework:spring-jdbc:$springVersion"
+//    implementation 'org.slf4j:slf4j-api:1.7.32'
+//    implementation 'ch.qos.logback:logback-core:1.2.5'
+//    implementation 'ch.qos.logback:logback-classic:1.2.5'
+//    implementation 'com.mattbertolini:liquibase-slf4j:4.0.0'
 
-    implementation 'mysql:mysql-connector-java:8.0.26'
+    runtimeOnly 'mysql:mysql-connector-java'
 
-    implementation 'org.slf4j:slf4j-api:1.7.32'
-    implementation 'ch.qos.logback:logback-core:1.2.5'
-    implementation 'ch.qos.logback:logback-classic:1.2.5'
-
-    implementation 'com.mattbertolini:liquibase-slf4j:4.0.0'
-
-    implementation 'org.liquibase:liquibase-core:4.4.3'
-
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
-}
-
-test {
-    useJUnitPlatform()
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
